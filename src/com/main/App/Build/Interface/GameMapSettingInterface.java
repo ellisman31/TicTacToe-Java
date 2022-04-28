@@ -11,4 +11,8 @@ public interface GameMapSettingInterface {
 
     void setGameMapSize();
 
+    private String askForMapSize() {
+        return null;
+    }
+
 }
