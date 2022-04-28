@@ -49,8 +49,6 @@ public class GameComputer implements GameComputerInterface {
                 }
             }
         }
-        System.out.println(placement);
-
     }
 
     public Set<String> getOwnPlacement() {

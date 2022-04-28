@@ -4,12 +4,12 @@ import com.main.App.Build.Interface.GameMapDisplayInterface;
 
 public class GameMapDisplay implements GameMapDisplayInterface {
 
-    private final GameMapSetting[][] gameMap;
+    private final GameMap[][] gameMap;
     private final GameSetting gameSetting;
     private final int gameMapLength;
 
-    public GameMapDisplay(GameMapSetting[][] gameMapSetting, GameSetting gameSetting) {
-        this.gameMap = gameMapSetting;
+    public GameMapDisplay(GameMap[][] gameMap, GameSetting gameSetting) {
+        this.gameMap = gameMap;
         this.gameSetting = gameSetting;
         this.gameMapLength = this.gameMap.length;
         gameMapInit();
@@ -38,13 +38,12 @@ public class GameMapDisplay implements GameMapDisplayInterface {
     private void gameMapInit() {
         for (int row = 0; row < gameMapLength; row++) {
             for (int col = 0; col < this.gameMap[row].length; col++) {
-                this.gameMap[row][col] = new GameMapSetting();
+                this.gameMap[row][col] = new GameMap();
             }
         }
     }
 
-    public GameMapSetting[][] getGameMap() {
+    public GameMap[][] getGameMap() {
         return gameMap;
     }
-
 }

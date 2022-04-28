@@ -3,7 +3,6 @@ package com.main.App.Build.App;
 import com.main.App.Build.Interface.GameInputInterface;
 
 import java.util.Scanner;
-import java.util.Set;
 
 public class GameInput implements GameInputInterface {
 
@@ -11,29 +10,29 @@ public class GameInput implements GameInputInterface {
     private static final int FIRST_CHAR_VALUE = 0;
     private static final int STARTER_INDEX_FOR_PLACEMENT_CHECKER = 1;
 
+    private final Scanner input = new Scanner(System.in);
+
     private int firstPlacement;
     private int secondPlacement;
     private String customErrorMessage;
 
-    private final Scanner input = new Scanner(System.in);
     private final GameSetting gameSetting = new GameSetting();
-    private GameMapDisplay gameMap;
-    private GameComputer gameComputer;
     private GameMapSetting gameMapSetting;
+    private GameMapDisplay gameMapDisplay;
+    private GameComputer gameComputer;
 
-    private final Set<String> ownPlacement;
-    private int gamePlacementStorageSize;
-
-    public GameInput(Set<String> ownPlacement) {
-        this.ownPlacement = ownPlacement;
+    public void inputInit() {
+        gameSetting.gameConfiguration();
+        gameMapSetting = gameSetting.getGameMapSetting();
+        this.gameMapDisplay = new GameMapDisplay(gameMapSetting.getGameMap(), gameSetting);
+        this.gameComputer = new GameComputer(gameSetting, gameMapDisplay,this);
     }
 
-    public void gameInit() {
-        gameSetting.gameConfiguration();
-        this.gameMap = new GameMapDisplay(gameSetting.getGameMapCreation(), gameSetting);
-        this.gameComputer = new GameComputer(gameSetting,gameMap,this);
-        this.gameMapSetting = gameSetting.getGameMapSetting();
-        placePlacement();
+    public String askForPlacement() {
+        System.out.println("\n" + getGameSetting().getPlayerName() + " turns! " + "Please provide your placement(C3,E6..):");
+
+        String placement = input.nextLine();
+        return placement.toLowerCase();
     }
 
     private void setPlacement(int firstPlacement, int secondPlacement) {
@@ -41,40 +40,11 @@ public class GameInput implements GameInputInterface {
         this.secondPlacement = secondPlacement;
     }
 
-    public void placePlacement() {
-
-        while (true) {
-            gameMap.gameMapDisplay();
-            System.out.println("\n" + gameSetting.getPlayerName() + " turns! " + "Please provide your placement(C3,E6..):");
-
-            String placement = input.nextLine();
-            placement = placement.toLowerCase();
-
-            if (checkPlacementInputIsValid(placement)) {
-
-                ownPlacement.add(placement);
-                gameMap.getGameMap()[firstPlacement][secondPlacement].setMapIcon(gameSetting.getFirstPlayerIcon());
-                this.gamePlacementStorageSize = ownPlacement.size() + gameComputer.getOwnPlacement().size();
-
-                if(gameMapSetting.getCurrentMapSize() == gamePlacementStorageSize) {
-                    gameMap.gameMapDisplay();
-                    break;
-                }
-                gameComputer.randomPlacement(ownPlacement);
-            }
-            else {
-                System.out.println(customErrorMessage);
-            }
-            //TODO: implement GameRule class
-        }
-
-    }
-
     public boolean checkPlacementInputIsValid(String placement) {
 
         boolean isPlacementIsInputValid = false;
 
-        if (!ownPlacement.contains(placement) && !gameComputer.getOwnPlacement().contains(placement)
+        if (!gameSetting.getOwnPlacement().contains(placement) && !gameComputer.getOwnPlacement().contains(placement)
                 && (Character.isLetter(placement.charAt(FIRST_CHAR_VALUE)))) {
 
             char letterOfPlacement = placement.charAt(FIRST_CHAR_VALUE);
@@ -101,7 +71,7 @@ public class GameInput implements GameInputInterface {
                 }
             }
 
-        } else if (ownPlacement.contains(placement) || gameComputer.getOwnPlacement().contains(placement)){
+        } else if (gameSetting.getOwnPlacement().contains(placement) || gameComputer.getOwnPlacement().contains(placement)){
             setCustomErrorMessage("The placement is already taken!");
         }
         else {
@@ -134,4 +104,19 @@ public class GameInput implements GameInputInterface {
         return secondPlacement;
     }
 
+    public GameSetting getGameSetting() {
+        return gameSetting;
+    }
+
+    public GameMapDisplay getGameMapDisplay() {
+        return gameMapDisplay;
+    }
+
+    public GameComputer getGameComputer() {
+        return gameComputer;
+    }
+
+    public String getCustomErrorMessage() {
+        return customErrorMessage;
+    }
 }

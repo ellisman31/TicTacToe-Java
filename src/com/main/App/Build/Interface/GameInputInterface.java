@@ -5,8 +5,6 @@ public interface GameInputInterface {
     private void setPlacement(int firstPlacement, int secondPlacement) {
     }
 
-    void placePlacement();
-
     boolean checkPlacementInputIsValid(String placement);
 
     private boolean sendPlacementChangeEvent(int letterValue, String numberOfPlacement) {
@@ -16,5 +14,5 @@ public interface GameInputInterface {
     private void setCustomErrorMessage(String customErrorMessage) {
     }
 
-    void gameInit();
+    void inputInit();
 }

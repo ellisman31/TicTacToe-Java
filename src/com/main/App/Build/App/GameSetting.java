@@ -13,8 +13,7 @@ public class GameSetting implements GameSettingInterface {
     private final String firstPlayerIcon = " X ";
     private final String secondPlayerIcon = " O ";
     private final Scanner input = new Scanner(System.in);
-    private GameMapSetting[][] gameMapCreation;
-    private GameMapSetting gameMapSetting = new GameMapSetting();
+    private final GameMapSetting gameMapSetting = new GameMapSetting();
 
     private int xMapValue;
     private int yMapValue;
@@ -25,7 +24,6 @@ public class GameSetting implements GameSettingInterface {
         gameMapSetting.setGameMapSize();
         this.xMapValue = gameMapSetting.getxMapValue();
         this.yMapValue = gameMapSetting.getyMapValue();
-        this.gameMapCreation = new GameMapSetting[xMapValue][yMapValue];
         setPlayerName();
     }
 
@@ -54,15 +52,11 @@ public class GameSetting implements GameSettingInterface {
         return yMapValue;
     }
 
-    public GameMapSetting[][] getGameMapCreation() {
-        return gameMapCreation;
+    public Set<String> getOwnPlacement() {
+        return ownPlacement;
     }
 
     public GameMapSetting getGameMapSetting() {
         return gameMapSetting;
-    }
-
-    public Set<String> getOwnPlacement() {
-        return ownPlacement;
     }
 }
