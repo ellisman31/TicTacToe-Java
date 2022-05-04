@@ -1,17 +1,15 @@
 package com.main.App.Build.App;
 
+import com.main.App.Build.BaseModel.GameBase;
 import com.main.App.Build.Interface.GameMapDisplayInterface;
 
-public class GameMapDisplay implements GameMapDisplayInterface {
+public class GameMapDisplay extends GameBase implements GameMapDisplayInterface {
 
-    private final GameMap[][] gameMap;
-    private final GameSetting gameSetting;
     private final int gameMapLength;
 
     public GameMapDisplay(GameMap[][] gameMap, GameSetting gameSetting) {
-        this.gameMap = gameMap;
-        this.gameSetting = gameSetting;
-        this.gameMapLength = this.gameMap.length;
+        super(gameSetting, gameMap);
+        this.gameMapLength = getGameMap().length;
         gameMapInit();
     }
 
@@ -21,14 +19,14 @@ public class GameMapDisplay implements GameMapDisplayInterface {
             char alphabet = (char) (65 + row);
             System.out.print(alphabet + " ");
 
-            for (int col = 0; col < this.gameMap[row].length; col++) {
-                System.out.print(this.gameMap[row][col].getMapIcon());
+            for (int col = 0; col < getGameMap()[row].length; col++) {
+                System.out.print(getGameMap()[row][col].getMapIcon());
             }
 
             System.out.println(" ");
 
             if (row == gameMapLength-1) {
-                for (int k = 0; k < gameSetting.getyMapValue(); k++) {
+                for (int k = 0; k < getGameSetting().getyMapValue(); k++) {
                     System.out.print("  " + (k+1));
                 }
             }
@@ -37,13 +35,9 @@ public class GameMapDisplay implements GameMapDisplayInterface {
 
     private void gameMapInit() {
         for (int row = 0; row < gameMapLength; row++) {
-            for (int col = 0; col < this.gameMap[row].length; col++) {
-                this.gameMap[row][col] = new GameMap();
+            for (int col = 0; col < getGameMap()[row].length; col++) {
+                getGameMap()[row][col] = new GameMap();
             }
         }
-    }
-
-    public GameMap[][] getGameMap() {
-        return gameMap;
     }
 }
