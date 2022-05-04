@@ -1,35 +1,32 @@
 package com.main.App.Build.App;
 
+import com.main.App.Build.BaseModel.GameBase;
 import com.main.App.Build.Interface.GameSettingInterface;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
-
-public class GameSetting implements GameSettingInterface {
+public class GameSetting extends GameBase implements GameSettingInterface {
 
     private String playerName;
 
     private final String firstPlayerIcon = " X ";
     private final String secondPlayerIcon = " O ";
-    private final Scanner input = new Scanner(System.in);
-    private final GameMapSetting gameMapSetting = new GameMapSetting();
 
     private int xMapValue;
     private int yMapValue;
 
-    private final Set<String> ownPlacement = new HashSet<>();
+    public GameSetting() {
+        super(new GameMapSetting());
+    }
 
     public void gameConfiguration() {
-        gameMapSetting.setGameMapSize();
-        this.xMapValue = gameMapSetting.getxMapValue();
-        this.yMapValue = gameMapSetting.getyMapValue();
+        getGameMapSetting().setGameMapSize();
+        this.xMapValue = getGameMapSetting().getxMapValue();
+        this.yMapValue = getGameMapSetting().getyMapValue();
         setPlayerName();
     }
 
     private void setPlayerName() {
         System.out.println("Before start to play please provide a name: ");
-        this.playerName = input.nextLine();
+        this.playerName = getInput().nextLine();
     }
 
     public String getPlayerName() {
@@ -50,13 +47,5 @@ public class GameSetting implements GameSettingInterface {
 
     public int getyMapValue() {
         return yMapValue;
-    }
-
-    public Set<String> getOwnPlacement() {
-        return ownPlacement;
-    }
-
-    public GameMapSetting getGameMapSetting() {
-        return gameMapSetting;
     }
 }
